@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Form</title>
+   <style>
+:root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --background-color: #f4f4f4;
+            --animation-duration: 0.5s;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background:url('cm.png');
+            height: 100vh;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px 60px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            width: 80%;
+            max-width: 800px;
+            margin: 40px 0;
+            animation: fadeIn var(--animation-duration) forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2, h3 {
+            text-align: center;
+            margin-bottom: 30px;
+color:black;
+        }
+
+        .form-group, button {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+color:block;
+        }
+
+        input, textarea, button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            transition: box-shadow var(--animation-duration);
+            font-size: 1rem;
+            outline: none;
+color:black;
+        }
+
+        input:focus, textarea:focus {
+            box-shadow: 0 0 5px var(--primary-color);
+        }
+
+        button {
+            background: var(--primary-color);
+            color: #fff;
+            cursor: pointer;
+            animation: hoverEffect var(--animation-duration) infinite alternate;
+        }
+
+        @keyframes hoverEffect {
+            from {
+                transform: translateY(0);
+            }
+            to {
+                transform: translateY(-5px);
+            }
+        }
+/* ...existing styles... */
+#output-container {
+    border: 2px solid var(--primary-color);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+#output-container h3 {
+    border-bottom: 1px solid var(--primary-color);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+#output-container p {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+}
+
+/* ...previous CSS... */
+
+#output-container img, 
+#output-container video {
+    border: 2px solid var(--primary-color);
+    border-radius: 8px;
+    max-width: 80%; /* Setting a max width for display */
+    max-height: 400px; /* Setting a max height for display */
+    display: block;
+    margin: 10px auto; /* Centering the image and video elements */
+}
+.cls
+{
+color:black;
+}
+.cls1
+{
+color:black;
+}
+
+.cls2
+{
+color:black;
+}
+
+
+    </style>
+</head>
+
+<body>
+    <div class="container" id="input-container">
+        <h2 class="mb-4 text-center">Enter Data</h2>
+        <form>
+            <div class="form-group">
+                <label class="cls" style="font-color:black;" for="title">Title:</label>
+                <input type="text" class="form-control" id="title" placeholder="Enter title">
+                <button type="button" class="btn btn-primary mt-2" onclick="storeTitle()">Store Title</button>
+            </div>
+            <div class="form-group">
+                <label class="cls2" for="image">Upload Image:</label>
+                <input type="file" class="form-control-file" id="image" accept="image/*">
+                <button type="button" class="btn btn-primary mt-2" onclick="storeImage()">Store Image</button>
+            </div>
+            <div class="form-group">
+                <label class="cls1" for="video">Upload Video:</label>
+                <input type="file" class="form-control-file" id="video" accept="video/*">
+                <button type="button" class="btn btn-primary mt-2" onclick="storeVideo()">Store Video</button>
+            </div>
+            <button type="button" class="btn btn-success" onclick="showManagedData()">Show Managed Data</button>
+        </form>
+    </div>
+
+    <div class="container" id="output-container" style="display: none;">
+    <h3 class="text-center">Your Managed Data</h3>
+    
+    <div>
+        <p>The text you entered is:</p>
+        <span id="output-text"></span>
+    </div>
+    
+    <div>
+        <p>The image you uploaded is:</p>
+        <img id="output-image" alt="Your Uploaded Image" style="display: none;">
+    </div>
+    
+    <div>
+        <p>The video you uploaded is:</p>
+        <video id="output-video" controls style="display: none;"></video>
+    </div>
+</div>
+
+    <script>
+        let storedTitle = "";
+        let storedImage = null;
+        let storedVideo = null;
+
+        function storeTitle() {
+            storedTitle = document.getElementById('title').value;
+            document.getElementById('title').value = ''; // Clear input
+            alert("Title Stored!");
+        }
+
+        function storeImage() {
+            const imageInput = document.getElementById('image');
+            if (imageInput.files && imageInput.files[0]) {
+                storedImage = URL.createObjectURL(imageInput.files[0]);
+                alert("Image Stored!");
+            }
+        }
+
+        function storeVideo() {
+            const videoInput = document.getElementById('video');
+            if (videoInput.files && videoInput.files[0]) {
+                storedVideo = URL.createObjectURL(videoInput.files[0]);
+                alert("Video Stored!");
+            }
+        }
+
+        function showManagedData() {
+            document.getElementById('input-container').style.display = 'none'; // Hide input container
+
+            // Show managed data
+            document.getElementById('output-text').textContent = storedTitle;
+            if (storedImage) {
+                const imgElem = document.getElementById('output-image');
+                imgElem.src = storedImage;
+                imgElem.style.display = 'block';
+            }
+            if (storedVideo) {
+                const vidElem = document.getElementById('output-video');
+                vidElem.src = storedVideo;
+                vidElem.style.display = 'block';
+            }
+
+            document.getElementById('output-container').style.display = 'block'; // Show output container
+        }
+    </script>
+</body>
+
+</html>
